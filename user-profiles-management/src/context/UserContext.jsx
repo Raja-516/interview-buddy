@@ -9,18 +9,21 @@ const defaultUsers = [
     id: 1,
     name: "Alice Johnson",
     email: "alice@example.com",
+    phone:"dsdfs",
     profile: "", // leave empty to use default SVG
   },
   {
     id: 2,
     name: "Bob Smith",
     email: "bob@example.com",
+    phone:"dsdfs",
     profile: "",
   },
   {
     id: 3,
     name: "Charlie Davis",
     email: "charlie@example.com",
+    phone:"dsdfs",
     profile: "",
   },
 ];
