@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useUsers } from "../context/UserContext";
+import { Pencil, Save, X } from "lucide-react";
 import ProfileCard from "../components/ProfileCard";
 import ProfileTabs from "../components/ProfileTabs";
 import EducationSkills from "../components/EducationSkills";
-import { Pencil, Save, X } from "lucide-react";
+import { useUsers } from "../context/UserContext";
+import { useParams } from "react-router-dom";
+import ExperienceSection from "../components/ExperienceSection";
+
 
 export default function Profile() {
   const { id } = useParams();
   const { users, setUsers } = useUsers();
   const [profile, setProfile] = useState(null);
-  const [activeTab, setActiveTab] = useState("Basic Info");
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({});
+  const [activeTab, setActiveTab] = useState("Basic Info");
+
+  const countries = {
+    India: { code: "+91", states: ["Tamil Nadu", "Karnataka", "Maharashtra", "Delhi"] },
+    USA: { code: "+1", states: ["California", "Texas", "Florida", "New York"] },
+    UK: { code: "+44", states: ["England", "Scotland", "Wales"] },
+  };
 
   useEffect(() => {
     const user = users.find((u) => u.id.toString() === id);
@@ -24,18 +32,24 @@ export default function Profile() {
 
   if (!profile) return <div>User not found</div>;
 
-  // Save Basic Info
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
   const handleBasicSave = () => {
-    const updatedUsers = users.map((u) =>
-      u.id.toString() === id ? form : u
-    );
+    const updatedUsers = users.map((u) => (u.id.toString() === id ? form : u));
     setUsers(updatedUsers);
     localStorage.setItem("users", JSON.stringify(updatedUsers));
     setProfile(form);
     setEditMode(false);
   };
 
-  // Save Education/Skills
+  const handleCancel = () => {
+    setForm(profile);
+    setEditMode(false);
+  };
+
   const handleEduSave = (updatedData) => {
     const updatedProfile = { ...profile, ...updatedData };
     const updatedUsers = users.map((u) =>
@@ -46,102 +60,214 @@ export default function Profile() {
     setProfile(updatedProfile);
   };
 
-  const fields = [
-    { label: "First Name", name: "firstName" },
-    { label: "Last Name", name: "lastName" },
-    { label: "Email", name: "email" },
-    
-    { label: "Year of Birth", name: "yearOfBirth" },
-    { label: "Gender", name: "gender" },
-    { label: "Phone", name: "phone" },
-    { label: "Alternate Phone", name: "altPhone" },
-    { label: "Address", name: "address" },
-    { label: "Pincode", name: "pincode" },
-    { label: "State", name: "state" },
-    { label: "Country", name: "country" },
-  ];
+  const phonePrefix = form.country ? countries[form.country]?.code || "" : "";
 
   return (
     <div className="max-w-5xl mx-auto p-6">
+      {/* Profile Card */}
       <ProfileCard user={profile} />
 
+      {/* Tabs */}
       <ProfileTabs
-        tabs={["Basic Info", "Education & Skills"]}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      />
+  tabs={["Basic Info", "Education & Skills", "Work Experience"]}
+  activeTab={activeTab}
+  onTabChange={setActiveTab}
+/>
 
-      {/* -------- BASIC INFO -------- */}
+
+      {/* Basic Info */}
       {activeTab === "Basic Info" && (
-        <div className="bg-white p-6 rounded-lg shadow mt-4 relative">
-          {/* Header + Edit Icon */}
+        <div className="bg-white p-6 mt-5 rounded-lg shadow mt-4 relative">
+          {/* Header */}
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Basic Information
-            </h3>
+            <h3 className="text-lg font-semibold  text-gray-700">Basic Information</h3>
             {!editMode && (
               <button
                 onClick={() => setEditMode(true)}
-                className="text-blue-600 hover:text-blue-800"
+                className="text-violet-600 hover:text-blue-800  flex items-center gap-1"
               >
-                <Pencil className="w-5 h-5" />
+                <Pencil size={18} /> 
               </button>
             )}
           </div>
 
-          {editMode ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {fields.map((field) => (
-                <div key={field.name} className="flex flex-col">
-                  <label className="text-gray-600 mb-1">{field.label}</label>
-                  <input
-                    type="text"
-                    name={field.name}
-                    value={form[field.name] || ""}
-                    onChange={(e) =>
-                      setForm({ ...form, [field.name]: e.target.value })
-                    }
-                    className="border p-2 rounded w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              ))}
+          {/* Form Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-              <div className="flex justify-end gap-3 col-span-full mt-4">
-                <button
-                  onClick={() => {
-                    setEditMode(false);
-                    setForm(profile);
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
-                >
-                  <X className="w-4 h-4" /> Cancel
-                </button>
-                <button
-                  onClick={handleBasicSave}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  <Save className="w-4 h-4" /> Save
-                </button>
+            {/* Row 1 */}
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                value={form.firstName || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                value={form.lastName || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              />
+            </div>
+
+            {/* Row 2 */}
+            {/* Row 2: Year of Birth & Gender side by side */}
+<div className="flex gap-4 text-sm">
+  <div className="flex flex-col w-1/2">
+    <label className="text-gray-500 font-medium">Year of Birth</label>
+    <input
+      type="text"
+      name="yearOfBirth"
+      value={form.yearOfBirth || ""}
+      onChange={handleChange}
+      disabled={!editMode}
+      className={`border p-1 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+    />
+  </div>
+  <div className="flex flex-col w-1/2">
+    <label className="text-gray-500 font-medium">Gender</label>
+    <select
+      name="gender"
+      value={form.gender || ""}
+      onChange={handleChange}
+      disabled={!editMode}
+      className={`border p-1 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+    >
+      <option value="">Select</option>
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+  </div>
+</div>
+
+
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">Phone</label>
+              <div className="flex items-center">
+                <span className="px-2 text-gray-500">{phonePrefix}</span>
+                <input
+                  type="text"
+                  name="phone"
+                  value={form.phone || ""}
+                  onChange={handleChange}
+                  disabled={!editMode}
+                  className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                />
               </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {fields.map((field, idx) => (
-                <div key={idx} className="flex flex-col">
-                  <span className="text-gray-500 font-medium">
-                    {field.label}
-                  </span>
-                  <span className="text-gray-800">
-                    {profile[field.name] || "—"}
-                  </span>
-                </div>
-              ))}
+
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">Alternate Phone</label>
+              <input
+                type="text"
+                name="altPhone"
+                value={form.altPhone || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              />
             </div>
-          )}
+
+            {/* Row 3 & 4 */}
+            <div className="flex flex-col row-span-2">
+              <label className="text-gray-500 font-medium mb-1">Address</label>
+              <input
+                type="text"
+                name="address"
+                value={form.address || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className={`border p-2 rounded w-full h-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">Pincode</label>
+              <input
+                type="text"
+                name="pincode"
+                value={form.pincode || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">State</label>
+              <select
+                name="state"
+                value={form.state || ""}
+                onChange={handleChange}
+                disabled={!editMode || !form.country}
+                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              >
+                <option value="">Select</option>
+                {form.country &&
+                  countries[form.country].states.map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-gray-500 font-medium mb-1">Country</label>
+              <select
+                name="country"
+                value={form.country || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+              >
+                <option value="">Select</option>
+                {Object.keys(countries).map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Save/Cancel Buttons */}
+            {editMode && (
+              <div className="md:col-span-3 flex justify-end mt-4 gap-2">
+                <button
+                  onClick={handleBasicSave}
+                  className="flex items-center gap-1 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  <Save size={16} /> Save
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="flex items-center gap-1 px-3 py-1 border rounded text-gray-700 hover:bg-gray-100"
+                >
+                  <X size={16} /> Cancel
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
-      {/* -------- EDUCATION & SKILLS -------- */}
+      {/* Education & Skills */}
       {activeTab === "Education & Skills" && (
         <EducationSkills
           education={profile.education}
@@ -149,6 +275,28 @@ export default function Profile() {
           onSave={handleEduSave}
         />
       )}
+      {activeTab === "Work Experience" && (
+  <ExperienceSection
+    data={{
+      experiences: profile.experiences || [],
+      linkedin: profile.linkedin || "",
+      resume: profile.resume || "",
+    }}
+    userId={profile.id}
+    onSave={(updatedData) => {
+      // Update the profile and localStorage
+      const updatedProfile = { ...profile, ...updatedData };
+      setProfile(updatedProfile);
+
+      const updatedUsers = users.map((u) =>
+        u.id.toString() === profile.id.toString() ? updatedProfile : u
+      );
+      setUsers(updatedUsers);
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+    }}
+  />
+)}
+
     </div>
   );
 }

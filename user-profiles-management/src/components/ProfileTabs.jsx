@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function ProfileTabs({ tabs, activeTab, onTabChange }) {
   return (
-    <div className="flex border-b border-gray-200 mb-4">
+    <div className="flex border-b  border-gray-200 mb-4">
       {tabs.map((tab) => (
         <button
           key={tab}

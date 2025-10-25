@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { Pencil } from "lucide-react";
+import { Pencil, Save, X } from "lucide-react";
 
 export default function ExperienceSection({ data, onSave }) {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({
-    experiences: data.experiences || [
-      { domain: "", subdomain: "", years: "" },
-    ],
+    experiences: data.experiences || [{ domain: "", subdomain: "", years: "" }],
     linkedin: data.linkedin || "",
-    resume: data.resume || "",
+    resume: null, // Not saved to localStorage
   });
 
   const handleChange = (index, field, value) => {
@@ -18,7 +16,9 @@ export default function ExperienceSection({ data, onSave }) {
   };
 
   const handleSubmit = () => {
-    onSave(form);
+    const saveData = { ...form };
+    delete saveData.resume; // exclude resume from saving
+    onSave(saveData);
     setEditMode(false);
   };
 
@@ -34,44 +34,45 @@ export default function ExperienceSection({ data, onSave }) {
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">Work Experience</h3>
         <button
-          className="text-gray-500 hover:text-blue-600"
-          onClick={() => setEditMode(!editMode)}
-        >
-          <Pencil size={18} />
-        </button>
+                    onClick={() => setEditMode(true)}
+                    className="text-violet-600 hover:text-blue-800"
+                  >
+                    <Pencil className="w-5 h-5" />
+                  </button>
       </div>
 
       {form.experiences.map((exp, i) => (
-        <div key={i} className="grid md:grid-cols-3 gap-4 mb-3">
+        <div key={i} className="mb-4 space-y-2">
+          {/* Domain full width */}
           <input
             placeholder="Domain"
             value={exp.domain}
-            disabled={!editMode}
             onChange={(e) => handleChange(i, "domain", e.target.value)}
-            className="border rounded-md p-2"
-          />
-          <input
-            placeholder="Sub-domain"
-            value={exp.subdomain}
             disabled={!editMode}
-            onChange={(e) => handleChange(i, "subdomain", e.target.value)}
-            className="border rounded-md p-2"
+            className="border rounded-md p-2 w-full bg-gray-100"
           />
-          <input
-            placeholder="Experience (yrs)"
-            value={exp.years}
-            disabled={!editMode}
-            onChange={(e) => handleChange(i, "years", e.target.value)}
-            className="border rounded-md p-2"
-          />
+          {/* Sub-domain + Experience */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <input
+              placeholder="Sub-domain"
+              value={exp.subdomain}
+              onChange={(e) => handleChange(i, "subdomain", e.target.value)}
+              disabled={!editMode}
+              className="border rounded-md p-2 w-full bg-gray-100"
+            />
+            <input
+              placeholder="Experience (yrs)"
+              value={exp.years}
+              onChange={(e) => handleChange(i, "years", e.target.value)}
+              disabled={!editMode}
+              className="border rounded-md p-2 w-full bg-gray-100"
+            />
+          </div>
         </div>
       ))}
 
       {editMode && (
-        <button
-          onClick={addRow}
-          className="text-blue-600 text-sm font-medium mb-4"
-        >
+        <button onClick={addRow} className="text-blue-600 text-sm font-medium mb-4">
           + Add Another
         </button>
       )}
@@ -82,24 +83,30 @@ export default function ExperienceSection({ data, onSave }) {
           value={form.linkedin}
           disabled={!editMode}
           onChange={(e) => setForm({ ...form, linkedin: e.target.value })}
-          className="border rounded-md p-2"
+          className="border rounded-md p-2 w-full bg-gray-100"
         />
         <input
-          placeholder="Resume File Link"
-          value={form.resume}
+          type="file"
+          accept=".pdf"
           disabled={!editMode}
-          onChange={(e) => setForm({ ...form, resume: e.target.value })}
-          className="border rounded-md p-2"
+          onChange={(e) => setForm({ ...form, resume: e.target.files[0] })}
+          className="border rounded-md p-2 w-full bg-gray-100"
         />
       </div>
 
       {editMode && (
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end mt-4 gap-2">
+          <button
+            onClick={() => setEditMode(false)}
+            className="flex items-center gap-2 px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+          >
+            <X size={16} /> Cancel
+          </button>
           <button
             onClick={handleSubmit}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Save
+            <Save size={16} /> Save
           </button>
         </div>
       )}
