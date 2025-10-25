@@ -96,36 +96,36 @@ export default function Profile() {
 
             {/* Row 1 */}
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">First Name</label>
+              <label className="text-gray-500 font-small mb-1">Firstname</label>
               <input
                 type="text"
                 name="firstName"
                 value={form.firstName || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray text-gray-500 font-small rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">Last Name</label>
+              <label className="text-gray-500 font-small mb-1">Lastname</label>
               <input
                 type="text"
                 name="lastName"
                 value={form.lastName || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">Email</label>
+              <label className="text-gray-500 font-small mb-1">Email ID</label>
               <input
                 type="email"
                 name="email"
                 value={form.email || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               />
             </div>
 
@@ -133,24 +133,24 @@ export default function Profile() {
             {/* Row 2: Year of Birth & Gender side by side */}
 <div className="flex gap-4 text-sm">
   <div className="flex flex-col w-1/2">
-    <label className="text-gray-500 font-medium">Year of Birth</label>
+    <label className="text-gray-500 font-small mb-1">Year of Birth</label>
     <input
       type="text"
       name="yearOfBirth"
       value={form.yearOfBirth || ""}
       onChange={handleChange}
       disabled={!editMode}
-      className={`border p-1 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+      className={`border p-1 bg-gray text-gray-500 font-small rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
     />
   </div>
   <div className="flex flex-col w-1/2">
-    <label className="text-gray-500 font-medium">Gender</label>
+    <label className="text-gray-500 font-small mb-1">Gender</label>
     <select
       name="gender"
       value={form.gender || ""}
       onChange={handleChange}
       disabled={!editMode}
-      className={`border p-1 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+      className={`border bg-gray text-gray-500 font-small p-1 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
     >
       <option value="">Select</option>
       <option>Male</option>
@@ -162,65 +162,65 @@ export default function Profile() {
 
 
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">Phone</label>
+              <label className="text-gray-500 font-small mb-1">Phone number</label>
               <div className="flex items-center">
-                <span className="px-2 text-gray-500">{phonePrefix}</span>
+                <span className="px-2  text-gray-500">{phonePrefix}</span>
                 <input
                   type="text"
                   name="phone"
                   value={form.phone || ""}
                   onChange={handleChange}
                   disabled={!editMode}
-                  className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                  className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
                 />
               </div>
             </div>
 
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">Alternate Phone</label>
+              <label className="text-gray-500 font-small mb-1">Alternate Phone no</label>
               <input
                 type="text"
                 name="altPhone"
                 value={form.altPhone || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               />
             </div>
 
             {/* Row 3 & 4 */}
             <div className="flex flex-col row-span-2">
-              <label className="text-gray-500 font-medium mb-1">Address</label>
+              <label className="text-gray-500 font-small mb-1">Address</label>
               <input
                 type="text"
                 name="address"
                 value={form.address || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 rounded w-full h-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full h-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               />
             </div>
 
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">Pincode</label>
+              <label className="text-gray-500 font-small mb-1">Pincode</label>
               <input
                 type="text"
                 name="pincode"
                 value={form.pincode || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               />
             </div>
 
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">State</label>
+              <label className="text-gray-500 font-small mb-1">Domicile State</label>
               <select
                 name="state"
                 value={form.state || ""}
                 onChange={handleChange}
                 disabled={!editMode || !form.country}
-                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               >
                 <option value="">Select</option>
                 {form.country &&
@@ -231,13 +231,13 @@ export default function Profile() {
             </div>
 
             <div className="flex flex-col">
-              <label className="text-gray-500 font-medium mb-1">Country</label>
+              <label className="text-gray-500 font-small mb-1">Domicile country</label>
               <select
                 name="country"
                 value={form.country || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
               >
                 <option value="">Select</option>
                 {Object.keys(countries).map((c) => (

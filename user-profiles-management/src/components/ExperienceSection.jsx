@@ -4,7 +4,10 @@ import { Pencil, Save, X } from "lucide-react";
 export default function ExperienceSection({ data, onSave }) {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({
-    experiences: data.experiences || [{ domain: "", subdomain: "", years: "" }],
+    experiences:
+      data.experiences && data.experiences.length > 0
+        ? data.experiences
+        : [{ domain: "Example Domain", subdomain: "", years: "" }], // dummy domain
     linkedin: data.linkedin || "",
     resume: null, // Not saved to localStorage
   });
@@ -33,12 +36,14 @@ export default function ExperienceSection({ data, onSave }) {
     <div className="bg-white p-6 rounded-2xl shadow-sm">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">Work Experience</h3>
-        <button
-                    onClick={() => setEditMode(true)}
-                    className="text-violet-600 hover:text-blue-800"
-                  >
-                    <Pencil className="w-5 h-5" />
-                  </button>
+        {!editMode && (
+          <button
+            onClick={() => setEditMode(true)}
+            className="text-violet-600 hover:text-blue-800"
+          >
+            <Pencil className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
       {form.experiences.map((exp, i) => (

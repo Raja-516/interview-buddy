@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Pencil, Save, X } from "lucide-react";
 
 export default function EducationSkills({ education = {}, skills = {}, onSave }) {
-  const [editMode, setEditMode] = useState(false);
+  const [editModeEdu, setEditModeEdu] = useState(false);
+  const [editModeSkills, setEditModeSkills] = useState(false);
+
   const [form, setForm] = useState({
     college: education.college || "",
     degree: education.degree || "",
@@ -25,123 +27,251 @@ export default function EducationSkills({ education = {}, skills = {}, onSave })
     });
   }, [education, skills]);
 
+  // Generic handler for inputs
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    const updatedData = {
-      education: {
-        college: form.college,
-        degree: form.degree,
-        course: form.course,
-        year: form.year,
-        grade: form.grade,
-      },
-      skills: {
-        skillsList: form.skillsList.split(",").map((s) => s.trim()),
-        projects: form.projects.split(",").map((p) => p.trim()),
-      },
+  // Save Education
+  const saveEducation = () => {
+    const updatedEducation = {
+      college: form.college,
+      degree: form.degree,
+      course: form.course,
+      year: form.year,
+      grade: form.grade,
     };
 
-    if (onSave) onSave(updatedData);
+    if (onSave) onSave({ education: updatedEducation });
 
-    // Save to localStorage
+    // Save to localStorage (fallback if no users exist)
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const updatedUsers = storedUsers.map((user) =>
-      user.id === education.id ? { ...user, ...updatedData } : user
+    localStorage.setItem(
+      "users",
+      JSON.stringify(
+        storedUsers.map((user) =>
+          user.id ? { ...user, education: updatedEducation } : user
+        )
+      )
     );
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-    setEditMode(false);
+    setEditModeEdu(false);
   };
 
-  // A helper to render fields in same layout for display mode
-  const DisplayField = ({ label, value }) => (
-    <div className="flex flex-col">
-      <label className="text-gray-500 text-sm">{label}</label>
-      <div className="border p-2 rounded w-full bg-gray-50 text-sm min-h-[38px]">{value || "Not provided"}</div>
-    </div>
-  );
+  // Save Skills
+  const saveSkills = () => {
+    const updatedSkills = {
+      skillsList: form.skillsList.split(",").map((s) => s.trim()),
+      projects: form.projects.split(",").map((p) => p.trim()),
+    };
+
+    if (onSave) onSave({ skills: updatedSkills });
+
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    localStorage.setItem(
+      "users",
+      JSON.stringify(
+        storedUsers.map((user) =>
+          user.id ? { ...user, skills: updatedSkills } : user
+        )
+      )
+    );
+
+    setEditModeSkills(false);
+  };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow mt-4 relative">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-700">Education & Skills</h3>
-        {!editMode && (
-          <button
-            onClick={() => setEditMode(true)}
-            className="text-violet-600 hover:text-blue-800"
-          >
-            <Pencil className="w-5 h-5" />
-          </button>
-        )}
-      </div>
+    <div className="space-y-8 mt-4 max-w-5xl mx-auto">
 
-      {editMode ? (
-        <div className="space-y-4">
-          {/* Education Section */}
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-600">Education</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <DisplayField label="College" value={form.college} />
-              <DisplayField label="Degree" value={form.degree} />
-              <DisplayField label="Course" value={form.course} />
-              <DisplayField label="Year" value={form.year} />
-              <DisplayField label="Grade" value={form.grade} />
-            </div>
-          </div>
-
-          {/* Skills Section */}
-          <div className="space-y-2 mt-4">
-            <h4 className="font-medium text-gray-600">Skills</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <DisplayField label="Skills" value={form.skillsList} />
-              <DisplayField label="Projects" value={form.projects} />
-            </div>
-          </div>
-
-          {/* Save / Cancel */}
-          <div className="flex justify-end gap-3 mt-4">
+      {/* Education Card */}
+      <div className="bg-white p-6 rounded-xl shadow-xl relative">
+        <div className="flex justify-between items-center mb-2">
+          <h4 className="font-semibold text-gray-700 text-lg">Education Details</h4>
+          {!editModeEdu && (
             <button
-              onClick={() => setEditMode(false)}
-              className="flex items-center gap-2 px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+              onClick={() => setEditModeEdu(true)}
+              className="text-violet-600 hover:text-blue-800"
+            >
+              <Pencil className="w-5 h-5" />
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="text-gray-500 text-sm">School / College</label>
+            {editModeEdu ? (
+              <input
+                type="text"
+                name="college"
+                value={form.college}
+                onChange={handleChange}
+                className="border p-2 rounded text-gray-500 w-full bg-gray-100 text-sm"
+              />
+            ) : (
+              <div className="border p-2 rounded text-gray-500 w-full bg-gray-50 text-sm">
+                {form.college || "Not provided"}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="text-gray-500 text-sm">Highest Degree or Equivalent</label>
+            {editModeEdu ? (
+              <input
+                type="text"
+                name="degree"
+                value={form.degree}
+                onChange={handleChange}
+                className="border p-2 text-gray-500 rounded w-full bg-gray-100 text-sm"
+              />
+            ) : (
+              <div className="border text-gray-500 p-2 rounded w-full bg-gray-50 text-sm">
+                {form.degree || "Not provided"}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="text-gray-500 text-sm">Course</label>
+            {editModeEdu ? (
+              <input
+                type="text"
+                name="course"
+                value={form.course}
+                onChange={handleChange}
+                className="border p-2 text-gray-500 rounded w-full bg-gray-100 text-sm"
+              />
+            ) : (
+              <div className="border p-2 text-gray-500 rounded w-full bg-gray-50 text-sm">
+                {form.course || "Not provided"}
+              </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-gray-500 text-sm">Year of Completion</label>
+              {editModeEdu ? (
+                <input
+                  type="text"
+                  name="year"
+                  value={form.year}
+                  onChange={handleChange}
+                  className="border p-2 text-gray-500 rounded w-full bg-gray-100 text-sm"
+                />
+              ) : (
+                <div className="border p-2 text-gray-500 rounded w-full bg-gray-50 text-sm">
+                  {form.year || "Not provided"}
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label className="text-gray-500 text-sm">Grade</label>
+              {editModeEdu ? (
+                <input
+                  type="text"
+                  name="grade"
+                  value={form.grade}
+                  onChange={handleChange}
+                  className="border p-2 text-gray-500  rounded w-full bg-gray-100 text-sm"
+                />
+              ) : (
+                <div className="border text-gray-500 p-2 rounded w-full bg-gray-50 text-sm">
+                  {form.grade || "Not provided"}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {editModeEdu && (
+          <div className="flex justify-end gap-3 mt-2">
+            <button
+              onClick={() => setEditModeEdu(false)}
+              className="flex items-center gap-2 px-4 py-2 border rounded text-gray-500 hover:bg-gray-100"
             >
               <X className="w-4 h-4" /> Cancel
             </button>
             <button
-              onClick={handleSave}
+              onClick={saveEducation}
               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               <Save className="w-4 h-4" /> Save
             </button>
           </div>
+        )}
+      </div>
+
+      {/* Skills Card */}
+      <div className="bg-white p-6 rounded-xl shadow-xl relative">
+        <div className="flex justify-between items-center mb-2">
+          <h4 className="font-semibold text-gray-700 text-lg">Skills & Projects</h4>
+          {!editModeSkills && (
+            <button
+              onClick={() => setEditModeSkills(true)}
+              className="text-violet-600 hover:text-blue-800"
+            >
+              <Pencil className="w-5 h-5" />
+            </button>
+          )}
         </div>
-      ) : (
-        <div className="space-y-3">
-          {/* Education Display */}
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-600">Education</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <DisplayField label="College" value={form.college} />
-              <DisplayField label="Degree" value={form.degree} />
-              <DisplayField label="Course" value={form.course} />
-              <DisplayField label="Year" value={form.year} />
-              <DisplayField label="Grade" value={form.grade} />
-            </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div>
+            <label className="text-gray-500 text-sm">Skills</label>
+            {editModeSkills ? (
+              <input
+                type="text"
+                name="skillsList"
+                value={form.skillsList}
+                onChange={handleChange}
+                className="border p-2 text-gray-500 rounded w-full bg-gray-100 text-sm"
+              />
+            ) : (
+              <div className="border p-2 text-gray-500 rounded w-full bg-gray-50 text-sm">
+                {form.skillsList || "Not provided"}
+              </div>
+            )}
           </div>
 
-          {/* Skills Display */}
-          <div className="space-y-2 mt-4">
-            <h4 className="font-medium text-gray-600">Skills</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <DisplayField label="Skills" value={form.skillsList} />
-              <DisplayField label="Projects" value={form.projects} />
-            </div>
+          <div>
+            <label className="text-gray-500 text-sm">Projects</label>
+            {editModeSkills ? (
+              <input
+                type="text"
+                name="projects"
+                value={form.projects}
+                onChange={handleChange}
+                className="border p-2 text-gray-500 rounded w-full bg-gray-100 text-sm"
+              />
+            ) : (
+              <div className="border p-2 text-gray-500 rounded w-full bg-gray-50 text-sm">
+                {form.projects || "Not provided"}
+              </div>
+            )}
           </div>
         </div>
-      )}
+
+        {editModeSkills && (
+          <div className="flex justify-end gap-3 mt-4">
+            <button
+              onClick={() => setEditModeSkills(false)}
+              className="flex items-center gap-2 px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+            >
+              <X className="w-4 h-4" /> Cancel
+            </button>
+            <button
+              onClick={saveSkills}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              <Save className="w-4 h-4" /> Save
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
