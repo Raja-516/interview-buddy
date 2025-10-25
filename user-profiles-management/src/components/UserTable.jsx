@@ -11,11 +11,65 @@ export default function UserTable() {
       <div className="border border-gray-300 rounded-lg bg-white">
         <table className="min-w-full">
           <thead>
-            <tr className="bg-gray-100 text-left">
-              <th className="px-6 py-3 w-16">S.No</th>
-              <th className="px-6 py-3">Name</th>
-              <th className="px-6 py-3">Email</th>
-              <th className="px-6 py-3 text-center">Actions</th>
+            <tr className="bg-gray-100 text-left text-small text-gray-500">
+            <th
+  className="px-6 py-3 w-16 text-center"
+  style={{
+    fontFamily: "'Nunito Sans', sans-serif",
+    fontWeight: 400,
+    fontSize: "12px",
+    lineHeight: "20px",
+    letterSpacing: "0%",
+  }}
+>
+  Sr. No
+</th>
+
+             <th
+  className="px-6 py-3"
+  style={{
+    width: "376px",
+    height: "20px",
+    fontFamily: "'Nunito Sans', sans-serif",
+    fontWeight: 400,
+    fontSize: "12px",
+    lineHeight: "20px",
+    letterSpacing: "0%",
+  }}
+>
+  Username
+</th>
+
+              <th
+  className="px-6 py-3"
+  style={{
+    width: "592px",
+    height: "20px",
+    fontFamily: "'Nunito Sans', sans-serif",
+    fontWeight: 400,
+    fontSize: "12px",
+    lineHeight: "20px",
+    letterSpacing: "0%",
+  }}
+>
+  E-mail
+</th>
+
+              <th
+  className="px-6 py-3 text-center"
+  style={{
+    width: "96px",
+    height: "20px",
+    fontFamily: "'Nunito Sans', sans-serif",
+    fontWeight: 400,
+    fontSize: "12px",
+    lineHeight: "20px",
+    letterSpacing: "0%",
+  }}
+>
+  Actions
+</th>
+
             </tr>
           </thead>
           <tbody>

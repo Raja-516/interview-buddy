@@ -9,18 +9,18 @@ export default function ProfileTabs({ tabs, activeTab, onTabChange }) {
 
         return (
           <button
-            key={tab}
-            onClick={() => onTabChange(tab)}
-            className={`
-              relative px-4 py-2 rounded-lg bg-gray-200 font-medium transition
-              ${isActive ? "text-violet-600" : "text-gray-700 hover:bg-gray-300"}
-            `}
-          >
-            {tab}
-            {alwaysDot && (
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            )}
-          </button>
+  key={tab}
+  onClick={() => onTabChange(tab)}
+  className={`relative h-8 px-4 py-[6px] text-gray-400 rounded-md bg-gray-100 text-sm font-medium 
+    transition-colors duration-200 
+    ${isActive ? "text-violet-600 " : "text-gray-500 hover:bg-violet-100"}`}
+>
+  {tab}
+  {alwaysDot && (
+    <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+  )}
+</button>
+
         );
       })}
     </div>

@@ -7,7 +7,6 @@ import { useUsers } from "../context/UserContext";
 import { useParams } from "react-router-dom";
 import ExperienceSection from "../components/ExperienceSection";
 
-
 export default function Profile() {
   const { id } = useParams();
   const { users, setUsers } = useUsers();
@@ -69,11 +68,10 @@ export default function Profile() {
 
       {/* Tabs */}
       <ProfileTabs
-  tabs={["Basic Info", "Education & Skills", "Work Experience"]}
-  activeTab={activeTab}
-  onTabChange={setActiveTab}
-/>
-
+        tabs={["Basic Info", "Education & Skills", "Experience"]}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
 
       {/* Basic Info */}
       {activeTab === "Basic Info" && (
@@ -83,27 +81,27 @@ export default function Profile() {
             <h3 className="text-lg font-semibold  text-gray-700">Basic Information</h3>
             {!editMode && (
               <button
-                onClick={() => setEditMode(true)}
-                className="text-violet-600 hover:text-blue-800  flex items-center gap-1"
-              >
-                <Pencil size={18} /> 
-              </button>
+  onClick={() => setEditMode(true)}
+  className="bg-gray-200 hover:bg-gray-300 text-violet-600 flex items-center justify-center w-8 h-8 gap-2 rounded"
+>
+  <Pencil className="w-4 h-4" /> {/* Increased from 11.2px (~w-[11.2px]) to 16px (w-4) */}
+</button>
+
             )}
           </div>
 
           {/* Form Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
             {/* Row 1 */}
             <div className="flex flex-col">
-              <label className="text-gray-500 font-small mb-1">Firstname</label>
+              <label className="text-gray-500 font-sm mb-1">Firstname</label>
               <input
                 type="text"
                 name="firstName"
                 value={form.firstName || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border p-2 bg-gray text-gray-500 font-small rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               />
             </div>
             <div className="flex flex-col">
@@ -114,7 +112,7 @@ export default function Profile() {
                 value={form.lastName || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               />
             </div>
             <div className="flex flex-col">
@@ -125,53 +123,51 @@ export default function Profile() {
                 value={form.email || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               />
             </div>
 
             {/* Row 2 */}
-            {/* Row 2: Year of Birth & Gender side by side */}
-<div className="flex gap-4 text-sm">
-  <div className="flex flex-col w-1/2">
-    <label className="text-gray-500 font-small mb-1">Year of Birth</label>
-    <input
-      type="text"
-      name="yearOfBirth"
-      value={form.yearOfBirth || ""}
-      onChange={handleChange}
-      disabled={!editMode}
-      className={`border p-1 bg-gray text-gray-500 font-small rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
-    />
-  </div>
-  <div className="flex flex-col w-1/2">
-    <label className="text-gray-500 font-small mb-1">Gender</label>
-    <select
-      name="gender"
-      value={form.gender || ""}
-      onChange={handleChange}
-      disabled={!editMode}
-      className={`border bg-gray text-gray-500 font-small p-1 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
-    >
-      <option value="">Select</option>
-      <option>Male</option>
-      <option>Female</option>
-      <option>Other</option>
-    </select>
-  </div>
-</div>
-
+            <div className="flex gap-4 text-sm">
+              <div className="flex flex-col w-1/2">
+                <label className="text-gray-500 font-small mb-1">Year of Birth</label>
+                <input
+                  type="text"
+                  name="yearOfBirth"
+                  value={form.yearOfBirth || ""}
+                  onChange={handleChange}
+                  disabled={!editMode}
+                  className={`border p-1 bg-gray-100 text-gray-500 font-small rounded w-full`}
+                />
+              </div>
+              <div className="flex flex-col w-1/2">
+                <label className="text-gray-500 font-small mb-1">Gender</label>
+                <select
+                  name="gender"
+                  value={form.gender || ""}
+                  onChange={handleChange}
+                  disabled={!editMode}
+                  className={`border p-1 bg-gray-100 text-gray-500 font-small rounded w-full`}
+                >
+                  <option value="">Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
 
             <div className="flex flex-col">
               <label className="text-gray-500 font-small mb-1">Phone number</label>
               <div className="flex items-center">
-                <span className="px-2  text-gray-500">{phonePrefix}</span>
+                <span className="px-2 text-gray-500">{phonePrefix}</span>
                 <input
                   type="text"
                   name="phone"
                   value={form.phone || ""}
                   onChange={handleChange}
                   disabled={!editMode}
-                  className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                  className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
                 />
               </div>
             </div>
@@ -184,20 +180,20 @@ export default function Profile() {
                 value={form.altPhone || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               />
             </div>
 
-            {/* Row 3 & 4 */}
+            {/* Address textarea */}
             <div className="flex flex-col row-span-2">
               <label className="text-gray-500 font-small mb-1">Address</label>
-              <input
-                type="text"
+              <textarea
                 name="address"
                 value={form.address || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full h-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                rows={4}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               />
             </div>
 
@@ -209,7 +205,7 @@ export default function Profile() {
                 value={form.pincode || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               />
             </div>
 
@@ -220,7 +216,7 @@ export default function Profile() {
                 value={form.state || ""}
                 onChange={handleChange}
                 disabled={!editMode || !form.country}
-                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               >
                 <option value="">Select</option>
                 {form.country &&
@@ -237,7 +233,7 @@ export default function Profile() {
                 value={form.country || ""}
                 onChange={handleChange}
                 disabled={!editMode}
-                className={`border bg-gray text-gray-500 font-small p-2 rounded w-full ${editMode ? "bg-gray-100" : "bg-white"}`}
+                className={`border p-2 bg-gray-100 text-gray-500 font-small rounded w-full`}
               >
                 <option value="">Select</option>
                 {Object.keys(countries).map((c) => (
@@ -275,28 +271,27 @@ export default function Profile() {
           onSave={handleEduSave}
         />
       )}
-      {activeTab === "Work Experience" && (
-  <ExperienceSection
-    data={{
-      experiences: profile.experiences || [],
-      linkedin: profile.linkedin || "",
-      resume: profile.resume || "",
-    }}
-    userId={profile.id}
-    onSave={(updatedData) => {
-      // Update the profile and localStorage
-      const updatedProfile = { ...profile, ...updatedData };
-      setProfile(updatedProfile);
+      {activeTab === "Experience" && (
+        <ExperienceSection
+          data={{
+            experiences: profile.experiences || [],
+            linkedin: profile.linkedin || "",
+            resume: profile.resume || "",
+          }}
+          userId={profile.id}
+          onSave={(updatedData) => {
+            // Update the profile and localStorage
+            const updatedProfile = { ...profile, ...updatedData };
+            setProfile(updatedProfile);
 
-      const updatedUsers = users.map((u) =>
-        u.id.toString() === profile.id.toString() ? updatedProfile : u
-      );
-      setUsers(updatedUsers);
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
-    }}
-  />
-)}
-
+            const updatedUsers = users.map((u) =>
+              u.id.toString() === profile.id.toString() ? updatedProfile : u
+            );
+            setUsers(updatedUsers);
+            localStorage.setItem("users", JSON.stringify(updatedUsers));
+          }}
+        />
+      )}
     </div>
   );
 }

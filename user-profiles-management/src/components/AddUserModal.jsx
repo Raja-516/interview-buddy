@@ -82,21 +82,30 @@ export default function AddUserModal({ isOpen, onClose }) {
     </div>
 
     {/* Buttons pinned at bottom */}
-    <div className="flex justify-end space-x-2 mt-4">
+    <div className="flex justify-end space-x-2 mt-4 ">
       <button
         type="button"
-        className="px-4 py-2 border rounded hover:bg-gray-100"
+        className="px-5 py-2 border rounded bg-violet-100 hover:bg-violet-200"
         onClick={onClose}
       >
         Cancel
       </button>
       <button
-        type="submit"
-        onClick={handleSubmit}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-      >
-        Add
-      </button>
+  type="submit"
+  onClick={handleSubmit}
+  className="bg-violet-600 text-white rounded-md hover:bg-violet-700 flex items-center justify-center"
+  style={{
+    width: "59px",       // Hug width
+    height: "40px",      // Fixed height
+    padding: "10px 16px",// Top/Bottom 10px, Left/Right 16px
+    gap: "4px",          // Space between icon/text if any
+    fontWeight: 400,     // Regular
+    fontFamily: "'Nunito Sans', sans-serif"
+  }}
+>
+  Add
+</button>
+
     </div>
   </div>
 </div>

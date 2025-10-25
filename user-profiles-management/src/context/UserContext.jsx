@@ -7,6 +7,7 @@ const defaultUsers = [
   {
     id: 1,
     firstName: "Alice",
+    name:"Alice",
     lastName: "Johnson",
     email: "alice@example.com",
     phone: "+91 9876543210",
@@ -32,6 +33,7 @@ const defaultUsers = [
   {
     id: 2,
     firstName: "Bob",
+    name:"Bob",
     lastName: "Smith",
     email: "bob@example.com",
     phone: "+91 9823456789",
